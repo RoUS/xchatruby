@@ -87,6 +87,7 @@ module XChatRuby
 
   # A wrapper for a callback method.
   #   name:      the name of the callback
+  #   pri:       the priority of the callback
   #   hook:      the callback itself
   #   hook_id:   the XChatHook object for this hook
   #   requester: the object that requested the hook be set.
@@ -94,13 +95,15 @@ module XChatRuby
 
   class XChatRubyCallback
     attr_reader :name
+    attr_reader :pri
     attr_reader :hook
     attr_reader :hook_id
     attr_reader :requester
     attr_reader :data
 
-    def initialize( name, hook, hook_id, requester, data = nil )
+    def initialize( name, pri, hook, hook_id, requester, data = nil )
       @name = name
+      @pri = pri
       @hook = hook
       @hook_id = hook_id
       @requester = requester
@@ -204,21 +207,24 @@ module XChatRuby
     # The following routines simply manage the registration of callback hooks.
 
     def XChatRubyEnvironment.hook_command( name, priority, hook, help, requester, data = nil )
-      add_new_hook( @@command_hooks, name, hook, requester, internal_xchat_hook_command( name, priority, help ), data )
+      add_new_hook( @@command_hooks, name, priority, hook, requester,
+                    internal_xchat_hook_command( name, priority, help ), data )
     end
 
     def XChatRubyEnvironment.hook_print( name, priority, hook, requester, data = nil )
-      add_new_hook( @@print_hooks, name, hook, requester, internal_xchat_hook_print( name, priority ), data )
+      add_new_hook( @@print_hooks, name, priority,
+                    hook, requester, internal_xchat_hook_print( name, priority ), data )
     end
 
     def XChatRubyEnvironment.hook_server( name, priority, hook, requester, data = nil )
-      add_new_hook( @@server_hooks, name, hook, requester, internal_xchat_hook_server( name, priority ), data )
+      add_new_hook( @@server_hooks, name, priority,
+                    hook, requester, internal_xchat_hook_server( name, priority ), data )
     end
 
     def XChatRubyEnvironment.hook_timer( timeout, hook, requester, data = nil )
       now = Time.now
       name = "#{now.to_i}+#{now.usec}"
-      add_new_hook( @@timer_hooks, name, hook, requester, internal_xchat_hook_timer( name, timeout ), data )
+      add_new_hook( @@timer_hooks, name, 0, hook, requester, internal_xchat_hook_timer( name, timeout ), data )
     end
 
     # This removes all registered hooks for the given requester.  It is typically called only by the
@@ -359,16 +365,10 @@ module XChatRuby
 
     # -- PRIVATE --------------------------------------------------------------
 
-    def XChatRubyEnvironment.add_new_hook( hooks, name, hook, requester, id, data )
-      delete_named_hook( hooks, name )
-      hooks.push XChatRubyCallback.new( name, hook, id, requester, data )
+    def XChatRubyEnvironment.add_new_hook( hooks, name, pri, hook, requester, id, data )
+      hooks.push XChatRubyCallback.new( name, pri, hook, id, requester, data )
+      hooks.sort! { |a,b| -( a.pri <=> b.pri ) }
       return id
-    end
-
-    def XChatRubyEnvironment.delete_named_hook( hooks, name )
-      h = hooks.detect { |i| i.name == name }
-      delete_hook( hooks, h ) if h
-      return ( h ? true : false )
     end
 
     def XChatRubyEnvironment.delete_hook( hooks, hook )
@@ -393,10 +393,17 @@ module XChatRuby
     end
 
     def XChatRubyEnvironment.process_hook( hooks, name )
+      how_to_return = XChatRubyPlugin::XCHAT_EAT_NONE
+
       hooks.each do |hook|
         if hook.name.downcase == name.downcase
           begin
-            return yield hook
+            case ( rc = yield hook )
+              when XChatRubyPlugin::XCHAT_EAT_ALL, XChatRubyPlugin::XCHAT_EAT_PLUGIN then
+                return rc
+              when XChatRubyPlugin::XCHAT_EAT_XCHAT then
+                how_to_return = rc
+            end
           rescue Exception => detail
             puts "Ruby error executing hook '#{name}': #{detail.message}"
             puts "  " + detail.backtrace.join( "\n  " )
@@ -404,7 +411,7 @@ module XChatRuby
         end
       end
 
-      return XChatRubyPlugin::XCHAT_EAT_NONE
+      return how_to_return
     end
 
     def XChatRubyEnvironment.initialize_ruby_environment
@@ -435,7 +442,7 @@ module XChatRuby
       end
     end
 
-    private_class_method :add_new_hook, :delete_named_hook, :delete_hook, :process_command_hook
+    private_class_method :add_new_hook, :delete_hook, :process_command_hook
     private_class_method :process_print_hook, :process_server_hook, :process_timer_hook
     private_class_method :process_hook, :initialize_ruby_environment, :load_ruby_plugins
   end
