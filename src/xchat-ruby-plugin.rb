@@ -64,7 +64,7 @@ class Module
       # I'm not sure why the check on c.name is necessary, but for some reason, all classes
       # are coming up, in all XChatRuby modules... :(  This just makes sure that no classes
       # are listed unless they are defined underneath THIS module.
-      list.push c if c.type == Class && c.name =~ /#{self.name}/
+      list.push c if c.class == Class && c.name =~ /#{self.name}/
     end
     list
   end
@@ -805,11 +805,11 @@ module XChatRuby
 
     def rb_command_about( words, words_eol, data )
       puts
-      puts format "-![c(red)b]*![bc]------------------------------------------------"
-      puts format "X-Chat ![bc(red)]Ruby![bc] Interface 1.0.1"
+      puts format( "-![c(red)b]*![bc]------------------------------------------------" )
+      puts format( "X-Chat ![bc(red)]Ruby![bc] Interface 1.0.1" )
       puts
-      puts format "Copyright (c) 2003 ![bc(yellow)]Jamis Buck![bc] <jgb3@email.byu.edu>"
-      puts format "------------------------------------------------![bc(red)]*![cb]-"
+      puts format( "Copyright (c) 2003 ![bc(yellow)]Jamis Buck![bc] <jgb3@email.byu.edu>" )
+      puts format( "------------------------------------------------![bc(red)]*![cb]-" )
       puts
 
       return XCHAT_EAT_ALL
