@@ -799,7 +799,7 @@ module XChatRuby
     def rb_command_about( words, words_eol, data )
       puts
       puts format "-![c(red)b]*![bc]------------------------------------------------"
-      puts format "X-Chat ![bc(red)]Ruby![bc] Interface 0.1"
+      puts format "X-Chat ![bc(red)]Ruby![bc] Interface 1.0.1"
       puts
       puts format "Copyright (c) 2003 ![bc(yellow)]Jamis Buck![bc] <jgb3@email.byu.edu>"
       puts format "------------------------------------------------![bc(red)]*![cb]-"
