@@ -1,0 +1,43 @@
+XChat-Ruby Plugin v. 0.1
+
+Jamis Buck <jgb3@email.byu.edu>
+6 June 2003
+===============================
+
+Installation
+------------
+
+If you received a binary version of this plugin (already compiled), simply
+copy the xchat-ruby.so file to your ~/.xchat2 directory.  This will cause
+the ruby plugin to be loaded automatically when you run XChat.
+
+You don't need to have ruby installed, but it's a good idea (since some of
+the plugins you may use with the ruby plugin may need optional functionality
+that is shipped with the ruby interpreter).  If you have ruby installed, you
+can set up the ruby environment for the XChat-Ruby plugin by typing the
+following:
+
+  ruby -e 'puts $LOAD_PATH.join("\n")' > ~/.xchat2/rubyenv
+
+Sample plugins written in ruby may be found in the 'samples' subdirectory.
+
+If you have any plugins written in ruby that you want automatically loaded
+when you start XChat, you must (1) make sure the xchat-ruby.so plugin is
+loaded on start up, and (2) put the ruby scripts in your xchat2 home
+directory (the scripts MUST be suffixed with .rb).
+
+
+Compiling
+---------
+
+If you received a source package of XChat-Ruby, you can build and install
+the plugin by doing the following:
+
+  cd src
+  make
+  make install
+
+You MUST have ruby installed and in your path for this to work. This will
+copy the xchat-ruby.so file to your home xchat2 directory, and will also
+automatically initialize the ruby environment for the plugin.
+
