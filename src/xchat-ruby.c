@@ -371,7 +371,7 @@ static void static_init_xchat_environment( xchat_plugin *plugin_handle,
   *plugin_name = "XChat-Ruby";
   *plugin_desc = "Allows the Ruby interpreter to be interactively called from XChat, "
                  "and for XChat plugins to be written in Ruby.";
-  *plugin_version = "1.0.1";
+  *plugin_version = "1.1";
 }
 
 
