@@ -4,3 +4,5 @@ XChat-Ruby Plugin
 v1.0: 9 June 2003
   Initial release.
 
+v1.0.1: 9 June 2003
+  Very minor modifications in order to support compilation under Win32.
