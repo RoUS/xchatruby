@@ -36,6 +36,7 @@
 /* ``global'' variables (global to the XChat-Ruby plugin) {{{ */
 
 static xchat_plugin *static_plugin_handle = NULL;
+static xchat_plugin *ph = NULL;
 static int           static_ruby_initialized = 0;
 
 static VALUE         static_xchat_module;
@@ -871,7 +872,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
                       char **plugin_version,
                       char *arg)
 {
-  static_plugin_handle = plugin_handle;
+  ph = static_plugin_handle = plugin_handle;
 
   static_init_xchat_environment( plugin_handle,
                                  plugin_name,

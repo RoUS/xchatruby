@@ -42,7 +42,7 @@ class Module
 
   def module_load( file )
     $LOAD_PATH.dup.unshift( "" ).each do |path|
-      f = path + "/" + file
+      f = path + ( path.length > 0 ? "/" : "" ) + file
       if File.exist? f
         File.open( f, "r" ) do |fh|
           lines = fh.readlines.join
