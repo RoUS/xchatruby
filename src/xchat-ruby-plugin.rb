@@ -689,7 +689,8 @@ module XChatRuby
   class XChatRubyRBPlugin < XChatRubyPlugin
     def initialize
       hook_command( "RB", XCHAT_PRI_NORM, method( :rb_command_hook ),
-                    "Usage: /RB LOAD    <filename> : load the given Ruby script as a plugin\n" +
+                    "Usage: /RB HELP               : displays this message\n" +
+                    "           LOAD    <filename> : load the given Ruby script as a plugin\n" +
                     "           UNLOAD  <filename> : unload the given Ruby script\n" +
                     "           COMMANDS           : show all registered Ruby-plugin commands\n" +
                     "           LIST               : list all loaded Ruby plugins\n" +
@@ -704,10 +705,11 @@ module XChatRuby
     end
 
     def rb_command_hook( words, words_eol, data )
-      words[1] = "" if words[1] == nil
+      words[1] = "help" if words[1] == nil
       case words[1].downcase
-        when "" then
-          puts "You must specify the RB command to invoke"
+        when "help" then
+          XChatRubyEnvironment.command( "help rb" )
+          return XCHAT_EAT_ALL
 
         when "load" then
           return rb_command_load( words, words_eol, data )
