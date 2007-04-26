@@ -549,7 +549,7 @@ module XChatRuby
     end
 
     def get_prefs( name )
-      XChatRubyEnvironment.get_pres( name )
+      XChatRubyEnvironment.get_prefs( name )
     end
 
     def nickcmp( s1, s2 )
