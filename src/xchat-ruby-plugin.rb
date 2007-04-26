@@ -704,7 +704,7 @@ module XChatRuby
     end
 
     def rb_command_hook( words, words_eol, data )
-      words = "" if words == nil
+      words[1] = "" if words[1] == nil
       case words[1].downcase
         when "" then
           puts "You must specify the RB command to invoke"
