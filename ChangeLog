@@ -5,7 +5,7 @@ v1.2: 25 Apr 2007
   - Fixed bug 1705938: print, puts, print_fmt, puts_fmt with 3 arguments works
   - Fixed bug 1295417: print_fmt doesn't does print instead of puts
   - Fixed bug 1049124: Compile with -fPIC to support AMD64.
-  - Added xcode project for compiling a universal shared library on Mac
+  - Added makefile for compiling a universal shared library on Mac
     OS X 10.4
   - Makefile: added variables, uninstall
   - samples/JBanner.rb: added brackets around arguments (fix ruby warning)
