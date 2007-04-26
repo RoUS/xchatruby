@@ -1,7 +1,9 @@
-XChat-Ruby Plugin v. 1.1
+XChat-Ruby Plugin v. 1.2
+
+http://sourceforge.net/projects/xchat-ruby/
 
 Jamis Buck <jgb3@email.byu.edu>
-6 June 2003
+25 April 2007
 ===============================
 
 This is a plugin for XChat2 (http://www.xchat.org) which allows you to use
@@ -128,7 +130,8 @@ in your plugin source for convenience.
 
     print( text, server, channel )
         Prints the given text to the first tab/window displaying the given channel for
-        the given server.  No newline is appended.
+        the given server. The server name is what is listed in Network List.
+        No newline is appended.
 
     puts( text )
     puts( text, channel )

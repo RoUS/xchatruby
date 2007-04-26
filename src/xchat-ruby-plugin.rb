@@ -285,7 +285,7 @@ module XChatRuby
       if args.length == 2
         ctx = find_context( nil, args[1] )
       elsif args.length == 3
-        ctx = find_context( nil, args[1], args[2] )
+        ctx = find_context( args[1], args[2] )
       end
 
       set_context( ctx ) if ctx != nil
@@ -530,7 +530,7 @@ module XChatRuby
     def print_fmt( *args )
       return if args.length < 1
       args[0] = format( args[0] )
-      return puts( *args )
+      return print( *args )
     end
 
     # Same as print_fmt (above), but appends a newline.

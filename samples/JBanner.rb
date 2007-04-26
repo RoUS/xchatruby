@@ -194,7 +194,7 @@ class JBanner < XChatRubyPlugin
     file = open_banner_file( "r" )
     return if !file
     while !file.eof? do
-      @banners.push BannerDefinition.unserialize self, file
+      @banners.push BannerDefinition.unserialize( self, file )
     end
     file.close
   end

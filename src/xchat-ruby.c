@@ -32,8 +32,9 @@
 #include "xchat-plugin.h"
 #include "xchat-ruby-plugin.h"  /* this is the ruby code as a #define */
 
-
 /* ``global'' variables (global to the XChat-Ruby plugin) {{{ */
+
+#define XCHAT_RUBY_VERSION "1.2"
 
 static xchat_plugin *static_plugin_handle = NULL;
 static xchat_plugin *ph = NULL;
@@ -371,7 +372,7 @@ static void static_init_xchat_environment( xchat_plugin *plugin_handle,
   *plugin_name = "XChat-Ruby";
   *plugin_desc = "Allows the Ruby interpreter to be interactively called from XChat, "
                  "and for XChat plugins to be written in Ruby.";
-  *plugin_version = "1.1";
+  *plugin_version = XCHAT_RUBY_VERSION;
 }
 
 
