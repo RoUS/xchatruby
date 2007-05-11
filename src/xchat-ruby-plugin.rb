@@ -296,8 +296,8 @@ module XChatRuby
 
     def XChatRubyEnvironment.puts( *args )
       args.push "" if args.length == 0
-      args[0] = args[0] + "\n"
-      print( *args );
+      args[0] = args[0].to_s + "\n"
+      print( *args )
     end
 
     # Loads the given file as a plugin.  If the filename is already loaded, it is unloaded
@@ -491,7 +491,7 @@ module XChatRuby
     XCHAT_EAT_NONE     = 0
     XCHAT_EAT_XCHAT    = 1
     XCHAT_EAT_PLUGIN   = 2
-    XCHAT_EAT_ALL      = ( XCHAT_EAT_NONE | XCHAT_EAT_XCHAT | XCHAT_EAT_PLUGIN )
+    XCHAT_EAT_ALL      = ( XCHAT_EAT_XCHAT | XCHAT_EAT_PLUGIN )
 
     def unload_plugin
       XChatRubyEnvironment.remove_hooks_for( self )
@@ -802,7 +802,8 @@ module XChatRuby
       if !words_eol[2]
         puts "You must specify some ruby code to execute."
       else
-        eval words_eol[2], $xchat_global_eval_binding, "(/rb exec)"
+        result = eval(words_eol[2])
+        print result if result != nil
       end
 
       return XCHAT_EAT_ALL

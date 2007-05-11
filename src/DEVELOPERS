@@ -13,6 +13,7 @@ format
 
 *implemented
 **extended
+***internal
 
 *xchat_hook_command
 xchat_hook_fd
@@ -39,7 +40,7 @@ xchat_strip
 xchat_free
 
 *xchat_list_get
-xchat_list_free
+***xchat_list_free
 xchat_list_fields (not documented yet)
 *xchat_list_next
 *xchat_list_str
