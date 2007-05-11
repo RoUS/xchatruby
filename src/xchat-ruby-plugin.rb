@@ -544,12 +544,24 @@ module XChatRuby
       XChatRubyEnvironment.command( command )
     end
 
+    def find_context( server, channel )
+      XChatRubyEnvironment.find_context( server, channel )
+    end
+
+    def get_context
+      XChatRubyEnvironment.get_context
+    end
+
     def get_info( id )
       XChatRubyEnvironment.get_info( id )
     end
 
     def get_prefs( name )
       XChatRubyEnvironment.get_prefs( name )
+    end
+
+    def set_context( ctx )
+      XChatRubyEnvironment.set_context( ctx )
     end
 
     def nickcmp( s1, s2 )
