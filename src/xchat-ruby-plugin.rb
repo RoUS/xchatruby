@@ -280,8 +280,6 @@ module XChatRuby
       elsif args.length == 2
         ctx = internal_xchat_find_context( args[0], args[1] )
       end
-
-      return ctx
     end
 
     # print( text )
@@ -298,7 +296,12 @@ module XChatRuby
 
       if args.length > 0
         ctx = find_context( *args )
-        set_context( ctx ) if ctx != nil
+        if ctx != nil
+          result = set_context( ctx )
+          if result == 1
+            internal_xchat_print("Set context succeeded!\n")
+          end
+        end
       end
 
       internal_xchat_print( expression.to_s )
@@ -580,8 +583,8 @@ module XChatRuby
       XChatRubyEnvironment.nickcmp( s1, s2 )
     end
 
-    def emit_print( event_name, *args )
-      XChatRubyEnvironment.emit_print( event_name, *args )
+    def emit_print( *args )
+      XChatRubyEnvironment.emit_print( *args )
     end
 
     # these are the supported colors

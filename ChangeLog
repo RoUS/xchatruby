@@ -8,6 +8,7 @@ v1.x:
  - /rb exec executes ruby code and prints the returned object
  - puts now works with non-strings just like print
  - find_context, get_context and set_context added
+ - emit_print array referencing fixed
 
 v1.2: 25 Apr 2007
   - Fixed bug 1705938: print, puts, print_fmt, puts_fmt with 3 arguments works

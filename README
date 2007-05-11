@@ -187,6 +187,7 @@ The output is only visible to you. Use /say to post messages to the channel.
 
     emit_print( event, ... )
         Emits the named print event with the given parameters.
+        XChat-Ruby 1.2 only supports 16 events.
 
     format( text )
         The 'text' parameter may contain formatting codes to define where

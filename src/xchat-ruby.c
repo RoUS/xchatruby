@@ -240,18 +240,24 @@ static void static_init_ruby_environment( void )
 
   ruby_init();
 
-  /* "EMBEDDED_STUFF" is a macro that contains all of the Ruby code needed to
+  /* "XCHAT_RUBY_PLUGIN" is a macro that contains all of the Ruby code needed to
    * define the core XChat-Ruby interface.  Once this has been defined, all we
    * need to do is extract the defined classes and add the C hooks to them.
    */
 
   rb_eval_string( XCHAT_RUBY_PLUGIN );
 
-  static_xchat_module = rb_eval_string( "XChatRuby" );
+  static_xchat_module = rb_define_module( "XChatRuby" );
 
-  static_xchat_klass = rb_eval_string( "XChatRuby::XChatRubyEnvironment" );
-  static_xchat_list_klass = rb_eval_string( "XChatRuby::XChatRubyList" );
-  static_xchat_hook_klass = rb_define_class( "XChatRuby::XChatRubyCallback", rb_cObject );
+  static_xchat_klass = rb_define_class_under( static_xchat_module,
+                                              "XChatRubyEnvironment",
+                                              rb_cObject );
+  static_xchat_list_klass = rb_define_class_under( static_xchat_module,
+                                                   "XChatRubyList",
+                                                   rb_cObject );
+  static_xchat_hook_klass = rb_define_class_under( static_xchat_module,
+                                                   "XChatRubyCallback",
+                                                   rb_cObject );
 
   static_xchat_context_klass = rb_define_class_under( static_xchat_module,
                                                       "XChatContext",
@@ -729,28 +735,37 @@ static VALUE static_ruby_xchat_list_int( VALUE klass,
   return INT2FIX( rc );
 }
 
+/* http://blog.evanweaver.com/files/readme.ext.txt
 
+.\" README.EXT -  -*- Text -*- created at: Mon Aug  7 16:45:54 JST 1995
+
+The `argc' represents the number of the arguments to the C function,
+which must be less than 17.
+
+If argc is -1, the function will be called as:
+
+  VALUE func(int argc, VALUE *argv, VALUE obj)
+
+where argc is the actual number of arguments, argv is the C array of
+the arguments, and obj is the receiver.
+*/
 static VALUE static_ruby_xchat_emit_print( int    argc,
                                            VALUE *argv,
                                            VALUE  klass )
 {
-  char *event;
   char *parms[16];
   int   i;
 
-printf( "[argc: %d]\n", argc );
   if( argc < 1 )
     return Qfalse;
 
-  event = STR2CSTR( argv[0] );
-  for( i = 1; i < 16; i++ )
+  for( i = 0; i < 16; i++ )
   {
-    if( i >= argc ) parms[i-1] = NULL;
-    else parms[i-1] = STR2CSTR( argv[i] );
+    if( i < argc ) parms[i] = STR2CSTR( argv[i] );
+    else parms[i] = NULL;
   }
 
   i = xchat_emit_print( static_plugin_handle,
-                        event,
                         parms[ 0], parms[ 1], parms[ 2], parms[ 3],
                         parms[ 4], parms[ 5], parms[ 6], parms[ 7],
                         parms[ 8], parms[ 9], parms[10], parms[11],
