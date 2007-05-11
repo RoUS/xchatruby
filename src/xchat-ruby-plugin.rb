@@ -269,6 +269,21 @@ module XChatRuby
       end
     end
 
+    # find_context( channel )
+    # find_context( server, channel )
+    def XChatRubyEnvironment.find_context( *args )
+      return if args.length < 1
+
+      ctx = nil
+      if args.length == 1
+        ctx = internal_xchat_find_context( nil, args[0] )
+      elsif args.length == 2
+        ctx = internal_xchat_find_context( args[0], args[1] )
+      end
+
+      return ctx
+    end
+
     # print( text )
     #   Prints the given text.
     #
@@ -278,18 +293,15 @@ module XChatRuby
     # print( text, server, channel )
     #   Prints the given text to the tab/window for the given server and channel
 
-    def XChatRubyEnvironment.print( *args )
-      return if args.length < 1
+    def XChatRubyEnvironment.print( expression, *args )
+      return if expression == nil
 
-      ctx = nil
-      if args.length == 2
-        ctx = find_context( nil, args[1] )
-      elsif args.length == 3
-        ctx = find_context( args[1], args[2] )
+      if args.length > 0
+        ctx = find_context( *args )
+        set_context( ctx ) if ctx != nil
       end
 
-      set_context( ctx ) if ctx != nil
-      internal_xchat_print( args[0].to_s )
+      internal_xchat_print( expression.to_s )
     end
 
     # Same as print (above), but appends a newline.
@@ -544,8 +556,8 @@ module XChatRuby
       XChatRubyEnvironment.command( command )
     end
 
-    def find_context( server, channel )
-      XChatRubyEnvironment.find_context( server, channel )
+    def find_context( *args )
+      XChatRubyEnvironment.find_context( *args )
     end
 
     def get_context

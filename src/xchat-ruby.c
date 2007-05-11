@@ -302,7 +302,7 @@ static void static_init_ruby_environment( void )
                               1 );
 
   rb_define_singleton_method( static_xchat_klass,
-                              "find_context",
+                              "internal_xchat_find_context",
                               static_ruby_xchat_find_context,
                               2 );
 

@@ -120,18 +120,24 @@ in your plugin source for convenience.
         hook_id parameter should be a XChatHook object that was returned by a
         prior call to one of the hook_xxx methods.
 
+Note for print and puts:
+The output is only visible to you. Use /say to post messages to the channel.
+        
     print( text )
-        Prints the given text to the currently active tab/window.  No newline
-        is appended.
+        Prints the given text to the current context (currently active channel
+        or server tab/window).
 
     print( text, channel )
-        Prints the given text to the first tab/window displaying the given channel.
-        No newline is appended.
+        Prints the given text to the first matching channel, or the current
+        context if no match.
+
+    print( text, server, nil )
+        Prints the given text to the first channel or server context of the
+        given server, or the current context if no match.
 
     print( text, server, channel )
-        Prints the given text to the first tab/window displaying the given channel for
-        the given server. The server name is what is listed in Network List.
-        No newline is appended.
+        Prints the given text to the channel with matching channel and server,
+        or the current context if no match.
 
     puts( text )
     puts( text, channel )
@@ -152,6 +158,21 @@ in your plugin source for convenience.
 
     command( command )
         Has XChat process the given command (without the '/').
+
+    find_context( channel )
+    find_context( server, channel )
+        Returns the context with matching server and channel, or nil if not
+        found.
+        If server or channel is nil, the first match of the non-nil argument is
+        returned.
+        The server name is what is listed in the XChat Network List, including
+        spaces.
+
+    get_context
+        Returns the current context.
+
+    set_context( context )
+        Sets the current context to context.
 
     get_info( id )
         Returns either nil (if the given id doesn't match any known information
