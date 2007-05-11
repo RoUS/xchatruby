@@ -200,7 +200,16 @@ in your plugin source for convenience.
         This would format the word RED, with a red foreground, in bold.
         Valid color names are white, black, blue, green, red, brown, purple,
         orange, yellow, ltgreen, teal, ltcyan, ltblue, pink, grey, and ltgrey.
+        
+        How do you output text containing '!['?
+        Just format the formatting and output the text in between the formatting
+        directly.
+        
+        For example:
 
+          format( "![b]") + "some ![c(red)b]RED![bc] text" + format( "![b]" )
+
+        This formats the string "some ![c(red)b]RED![bc] text" in bold.
 
   class XChatRubyList
   -------------------
@@ -220,5 +229,4 @@ in your plugin source for convenience.
 
     int( name )
         Returns the given named field of the current record as an integer.
-
 

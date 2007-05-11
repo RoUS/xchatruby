@@ -707,6 +707,8 @@ module XChatRuby
     def rb_command_hook( words, words_eol, data )
       words[1] = "help" if words[1] == nil
       case words[1].downcase
+      
+        # The /rb help command depends on xchat's /help command
         when "help" then
           XChatRubyEnvironment.command( "help rb" )
           return XCHAT_EAT_ALL
@@ -800,7 +802,7 @@ module XChatRuby
       if !words_eol[2]
         puts "You must specify some ruby code to execute."
       else
-        eval words_eol[2], $xchat_global_binding, "(/rb exec)"
+        eval words_eol[2], $xchat_global_eval_binding, "(/rb exec)"
       end
 
       return XCHAT_EAT_ALL

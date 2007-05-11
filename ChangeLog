@@ -1,6 +1,12 @@
 XChat-Ruby Plugin
 -----------------
 
+v1.x:
+ - Fixed bug where command /rb is entered with no arguments
+ - Added help command
+ - Fixed typo: get_prefs instead of get_pres)
+ - Fixed typo: xchat_global_eval_binding instead of xchat_global_binding
+
 v1.2: 25 Apr 2007
   - Fixed bug 1705938: print, puts, print_fmt, puts_fmt with 3 arguments works
   - Fixed bug 1295417: print_fmt doesn't does print instead of puts

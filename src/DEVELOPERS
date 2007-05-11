@@ -12,6 +12,7 @@ format
 
 
 *implemented
+**extended
 
 *xchat_hook_command
 xchat_hook_fd
@@ -22,7 +23,7 @@ xchat_hook_fd
 
 *xchat_command
 xchat_commandf
-*xchat_print
+**xchat_print
 xchat_printf
 *xchat_emit_print
 xchat_send_modes
