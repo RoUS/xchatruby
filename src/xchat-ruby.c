@@ -398,9 +398,9 @@ static VALUE static_ruby_xchat_hook_command( VALUE klass,
   Check_Type( priority, T_FIXNUM );
   Check_Type( help, T_STRING );
 
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
   i_priority = FIX2INT( priority );
-  s_help = STR2CSTR( help );
+  s_help = StringValueCStr( help );
 
   hook = xchat_hook_command( static_plugin_handle,
                              s_name,
@@ -429,7 +429,7 @@ static VALUE static_ruby_xchat_hook_print( VALUE klass,
   Check_Type( name, T_STRING );
   Check_Type( priority, T_FIXNUM );
 
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
   i_priority = FIX2INT( priority );
 
   hook = xchat_hook_print( static_plugin_handle,
@@ -458,7 +458,7 @@ static VALUE static_ruby_xchat_hook_server( VALUE klass,
   Check_Type( name, T_STRING );
   Check_Type( priority, T_FIXNUM );
 
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
   i_priority = FIX2INT( priority );
 
   hook = xchat_hook_server( static_plugin_handle,
@@ -487,7 +487,7 @@ static VALUE static_ruby_xchat_hook_timer( VALUE klass,
   Check_Type( name, T_STRING );
   Check_Type( timeout, T_FIXNUM );
 
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
   i_timeout = FIX2INT( timeout );
 
   hook = xchat_hook_timer( static_plugin_handle,
@@ -510,7 +510,7 @@ static VALUE static_ruby_xchat_print( VALUE klass,
 
   Check_Type( text, T_STRING );
 
-  s_text = STR2CSTR( text );
+  s_text = StringValueCStr( text );
 
   xchat_print( static_plugin_handle, s_text );
 
@@ -537,7 +537,7 @@ static VALUE static_ruby_xchat_command( VALUE klass,
   char *cmd;
 
   Check_Type( command, T_STRING );
-  cmd = STR2CSTR( command );
+  cmd = StringValueCStr( command );
 
   xchat_command( static_plugin_handle,
                  cmd );
@@ -555,8 +555,14 @@ static VALUE static_ruby_xchat_find_context( VALUE klass,
   xchat_context *ctx;
   VALUE v_ctx;
 
-  if( !NIL_P( server ) ) s_server = STR2CSTR( server );
-  if( !NIL_P( channel ) ) s_channel = STR2CSTR( channel );
+  if( !NIL_P( server ) ) {
+    Check_Type( server, T_STRING );
+    s_server = StringValueCStr( server );
+  }
+  if( !NIL_P( channel ) ) {
+    Check_Type( channel, T_STRING );
+    s_channel = StringValueCStr( channel );
+  }
 
   ctx = xchat_find_context( static_plugin_handle,
                             s_server,
@@ -594,7 +600,8 @@ static VALUE static_ruby_xchat_get_info( VALUE klass,
   char *s_id;
   const char *s_info;
 
-  s_id = STR2CSTR( id );
+  Check_Type( id, T_STRING );
+  s_id = StringValueCStr( id );
 
   s_info = xchat_get_info( static_plugin_handle, s_id );
 
@@ -612,7 +619,8 @@ static VALUE static_ruby_xchat_get_prefs( VALUE klass,
   int   i_pref;
   int   rc;
 
-  s_name = STR2CSTR( name );
+  Check_Type( name, T_STRING );
+  s_name = StringValueCStr( name );
 
   rc = xchat_get_prefs( static_plugin_handle,
                         s_name,
@@ -656,8 +664,10 @@ static VALUE static_ruby_xchat_nickcmp( VALUE klass,
   char *s_s1;
   char *s_s2;
 
-  s_s1 = STR2CSTR( s1 );
-  s_s2 = STR2CSTR( s2 );
+  Check_Type( s1, T_STRING );
+  Check_Type( s2, T_STRING );
+  s_s1 = StringValueCStr( s1 );
+  s_s2 = StringValueCStr( s2 );
 
   return INT2FIX( xchat_nickcmp( static_plugin_handle, s_s1, s_s2 ) );
 }
@@ -670,7 +680,8 @@ static VALUE static_ruby_xchat_list_get( VALUE klass,
   char *s_name;
   VALUE v_list;
 
-  s_name = STR2CSTR( name );
+  Check_Type( name, T_STRING );
+  s_name = StringValueCStr( name );
 
   list = xchat_list_get( static_plugin_handle, s_name );
   if( list == NULL )
@@ -708,8 +719,9 @@ static VALUE static_ruby_xchat_list_str( VALUE klass,
   char *str;
   char *s_name;
 
+  Check_Type( name, T_STRING );
   Data_Get_Struct( list, xchat_list, x_list );
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
 
   str = (char*)xchat_list_str( static_plugin_handle, x_list, (const char*)s_name );
   if( str == NULL )
@@ -727,8 +739,9 @@ static VALUE static_ruby_xchat_list_int( VALUE klass,
   int rc;
   char *s_name;
 
+  Check_Type( name, T_STRING );
   Data_Get_Struct( list, xchat_list, x_list );
-  s_name = STR2CSTR( name );
+  s_name = StringValueCStr( name );
 
   rc = xchat_list_int( static_plugin_handle, x_list, s_name );
 
@@ -761,7 +774,7 @@ static VALUE static_ruby_xchat_emit_print( int    argc,
 
   for( i = 0; i < 16; i++ )
   {
-    if( i < argc ) parms[i] = STR2CSTR( argv[i] );
+    if( i < argc ) parms[i] = StringValueCStr( argv[i] );
     else parms[i] = NULL;
   }
 
@@ -785,11 +798,14 @@ static int static_ruby_custom_command_hook( char *word[],
   VALUE rc;
   int   i;
 
+  if(!word[0]){ return 0; }
+
   rb_word = rb_ary_new();
   rb_word_eol = rb_ary_new();
 
-  for( i = 1; word[i][0] != '\0'; i++ )
+  for( i = 1; word[i]; i++ )
   {
+    if('\0' == word[i][0]){ break; }
     rb_ary_push( rb_word, rb_str_new2( word[i] ) );
     rb_ary_push( rb_word_eol, rb_str_new2( word_eol[i] ) );
   }
@@ -813,11 +829,14 @@ static int static_ruby_custom_print_hook( char *word[],
   VALUE rc;
   int   i;
 
+  if(!word[0]){ return 0; }
+
   rb_name = (VALUE)userdata;
   rb_word = rb_ary_new();
 
-  for( i = 1; word[i] && word[i][0] != '\0'; i++ )
+  for( i = 1; word[i]; i++ )
   {
+    if('\0' == word[i][0]){ break; }
     rb_ary_push( rb_word, rb_str_new2( word[i] ) );
   }
 
@@ -840,11 +859,14 @@ static int static_ruby_custom_server_hook( char *word[],
   VALUE rc;
   int   i;
 
+  if(!word[0]){ return 0; }
+
   rb_word = rb_ary_new();
   rb_word_eol = rb_ary_new();
 
-  for( i = 1; word[i][0] != '\0'; i++ )
+  for( i = 1; word[i]; i++ )
   {
+    if('\0' == word[i][0]){ break; }
     rb_ary_push( rb_word, rb_str_new2( word[i] ) );
     rb_ary_push( rb_word_eol, rb_str_new2( word_eol[i] ) );
   }
