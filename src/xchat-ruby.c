@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ruby.h"
+#include <Ruby/Ruby.h>
 #include "xchat-plugin.h"
 #include "xchat-ruby-plugin.h"  /* this is the ruby code as a #define */
 
