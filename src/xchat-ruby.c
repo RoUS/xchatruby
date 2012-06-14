@@ -928,9 +928,9 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 
 int xchat_plugin_deinit()
 {
-  rb_funcall( static_xchat_klass,
-              rb_intern( "unregister" ),
-              0 );
+//  rb_funcall( static_xchat_klass,
+//              rb_intern( "unregister" ),
+//              0 );
 
   return 1;
 }
