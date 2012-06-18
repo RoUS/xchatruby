@@ -430,7 +430,7 @@ module XChatRuby
     end
 
     def XChatRubyEnvironment.initialize_ruby_environment
-      envfile = get_info( "xchatdir" ) + "/PlugIns/ruby.bundle/Contents/SharedSupport/rubyenv"
+      envfile = get_info( "xchatdir" ) + "/plugins-bundled/ruby.bundle/Contents/SharedSupport/rubyenv"
       begin
         File.open( envfile, "r" ) do |file|
           file.each do |line|
