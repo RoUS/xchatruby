@@ -389,7 +389,7 @@ static VALUE static_ruby_xchat_hook_command( VALUE klass,
 {
   char *s_name;
   char *s_help;
-  int   i_priority;
+  long  i_priority;
 
   xchat_hook *hook;
   VALUE       v_hook;
@@ -422,7 +422,7 @@ static VALUE static_ruby_xchat_hook_print( VALUE klass,
                                            VALUE priority )
 {
   char *s_name;
-  int   i_priority;
+  long  i_priority;
   xchat_hook *hook;
   VALUE v_hook;
 
@@ -451,7 +451,7 @@ static VALUE static_ruby_xchat_hook_server( VALUE klass,
                                             VALUE priority )
 {
   char *s_name;
-  int   i_priority;
+  long  i_priority;
   xchat_hook *hook;
   VALUE v_hook;
 
@@ -480,7 +480,7 @@ static VALUE static_ruby_xchat_hook_timer( VALUE klass,
                                            VALUE timeout )
 {
   char *s_name;
-  int   i_timeout;
+  long  i_timeout;
   xchat_hook *hook;
   VALUE v_hook;
 
